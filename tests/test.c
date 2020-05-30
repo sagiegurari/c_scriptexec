@@ -48,3 +48,13 @@ void assert_string_equal(char *value1, char *value2)
     test_fail();
   }
 }
+
+
+void assert_string_starts_with(char *string, char *prefix)
+{
+  if (strncmp(prefix, string, strlen(prefix)) != 0)
+  {
+    printf("assert failed, value: %s does not start with: %s", string, prefix);
+    test_fail();
+  }
+}

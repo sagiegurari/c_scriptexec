@@ -129,6 +129,10 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   result.out = read_text_file(out_file, buffer);
   result.err = read_text_file(err_file, buffer);
 
+  // delete files
+  remove(script_file);
+  rmdir(dir_name);
+
   string_buffer_release(buffer);
 
   return(result);
@@ -159,6 +163,7 @@ char *read_text_file(char *file, struct StringBuffer *buffer)
   }
 
   fclose(fp);
+  remove(file);
 
   return(string_buffer_to_string(buffer));
 }
