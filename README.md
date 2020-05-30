@@ -21,14 +21,13 @@ This library enables to invoke complex multi command scripts with a single C api
 
 ```c
 #include "scriptexec.h"
+#include <stdio.h>
 
 int main()
 {
   // invoke the script with default options
   struct ScriptExecResult result = scriptexec_run("echo 1\necho 2\necho 3\necho 4");
-  assert_num_equal(result.code, 0);
-  assert_string_equal(result.out, "1\n2\n3\n4\n");
-  assert_string_equal(result.err, "");
+  printf("Code: %d\nOutput:\n%s\nError:\n%s\n", result.code, result.out, result.err);
 
   // invoke the script with custom options
   struct ScriptExecOptions options = scriptexec_create_options();
@@ -38,10 +37,7 @@ int main()
   options.print_commands = true; // default false, if true will print every command before invocation
 
   result = scriptexec_run_with_options("echo 1\necho 2\necho 3\necho 4", options);
-
-  assert_num_equal(result.code, 0);
-  assert_string_equal(result.out, "1\n2\n3\n4\n");
-  assert_string_equal(result.err, "");
+  printf("Code: %d\nOutput:\n%s\nError:\n%s\n", result.code, result.out, result.err);
 }
 ```
 

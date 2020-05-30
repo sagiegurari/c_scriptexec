@@ -53,6 +53,11 @@ if(NOT WIN32)
   set_target_properties(scriptexec PROPERTIES COMPILE_FLAGS "${X_CMAKE_C_FLAGS} -Wconversion")
 endif()
 
+# example
+add_executable(example examples/example.c)
+target_link_libraries(example scriptexec)
+set_target_properties(example PROPERTIES COMPILE_FLAGS "${X_CMAKE_C_FLAGS}")
+
 # tests
 enable_testing()
 
