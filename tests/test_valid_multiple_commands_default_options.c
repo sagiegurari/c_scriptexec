@@ -9,7 +9,7 @@ void test_impl()
   struct ScriptExecResult  result = scriptexec_run_with_options("echo 1\necho 2\necho 3\necho 4", options);
 
   assert_num_equal(result.code, 0);
-  assert_string_equal(result.out, "1\n2\n3\n4\n");
+  assert_string_starts_with(result.out, "1\n2\n3\n4\n");
   assert_string_equal(result.err, "");
 }
 
