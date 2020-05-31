@@ -4,7 +4,7 @@
 [![Release](https://img.shields.io/github/v/release/sagiegurari/c_scriptexec)](https://github.com/sagiegurari/c_scriptexec/releases)
 [![license](https://img.shields.io/github/license/sagiegurari/c_scriptexec)](https://github.com/sagiegurari/c_scriptexec/blob/master/LICENSE)
 
-> Ensure the program runs continuously.
+> Invoke complex multi command scripts with a single C api call.
 
 * [Overview](#overview)
 * [Usage](#usage)
