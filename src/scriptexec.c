@@ -8,7 +8,8 @@
 
 // private functions
 struct ScriptExecResult create_result();
-char *read_text_file(char *, struct StringBuffer *);
+bool write_text_file(char *, const char *);
+char *read_and_delete_text_file(char *, struct StringBuffer *);
 
 struct ScriptExecOptions scriptexec_create_options()
 {
@@ -40,8 +41,7 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   }
 
   const size_t        script_length = strlen(script);
-  struct StringBuffer *buffer       = string_buffer_new_with_options(
-    script_length + 4096, true);
+  struct StringBuffer *buffer       = string_buffer_new_with_options(script_length + 4096, true);
 
   // move to cwd
   char *cwd = getcwd(NULL, 0);
@@ -71,13 +71,14 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   string_buffer_append_string(buffer, (char *)script);
   const char *updated_script = string_buffer_to_string(buffer);
 
-  char       template[] = "/tmp/tmpdir.XXXXXX";
+  char       template[] = "/tmp/scriptexec_XXXXXX";
   char       *dir_name  = mkdtemp(template);
 
   if (dir_name == NULL)
   {
-    result.code = -1;
     string_buffer_release(buffer);
+
+    result.code = -1;
     return(result);
   }
 
@@ -86,8 +87,6 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   string_buffer_append_string(buffer, "/script");
   char *script_file = string_buffer_to_string(buffer);
 
-  string_buffer_clear(buffer);
-  string_buffer_append_string(buffer, script_file);
   string_buffer_append_string(buffer, ".out");
   char *out_file = string_buffer_to_string(buffer);
 
@@ -97,15 +96,14 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   char *err_file = string_buffer_to_string(buffer);
 
   // write script file
-  FILE *fp = fopen(script_file, "w");
-  if (fp == NULL)
+  if (!write_text_file(script_file, updated_script))
   {
-    result.code = -1;
+    rmdir(dir_name);
     string_buffer_release(buffer);
+
+    result.code = -1;
     return(result);
   }
-  fprintf(fp, "%s", updated_script);
-  fclose(fp);
 
   // create command
   char *runner = options.runner;
@@ -126,8 +124,8 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   result.code = system(command);
 
   // read out/err
-  result.out = read_text_file(out_file, buffer);
-  result.err = read_text_file(err_file, buffer);
+  result.out = read_and_delete_text_file(out_file, buffer);
+  result.err = read_and_delete_text_file(err_file, buffer);
 
   // delete files
   remove(script_file);
@@ -146,7 +144,30 @@ struct ScriptExecResult create_result()
 }
 
 
-char *read_text_file(char *file, struct StringBuffer *buffer)
+bool write_text_file(char *file, const char *text)
+{
+  FILE *fp = fopen(file, "w");
+
+  if (fp == NULL)
+  {
+    return(false);
+  }
+
+  if (fputs(text, fp) == EOF)
+  {
+    fclose(fp);
+    remove(file);
+
+    return(false);
+  }
+
+  fclose(fp);
+
+  return(true);
+}
+
+
+char *read_and_delete_text_file(char *file, struct StringBuffer *buffer)
 {
   FILE *fp = fopen(file, "r");
 
