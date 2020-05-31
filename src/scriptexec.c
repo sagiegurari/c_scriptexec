@@ -40,8 +40,7 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
     return(result);
   }
 
-  const size_t        script_length = strlen(script);
-  struct StringBuffer *buffer       = string_buffer_new_with_options(script_length + 4096, true);
+  struct StringBuffer *buffer = string_buffer_new();
 
   // move to cwd
   char *cwd = getcwd(NULL, 0);

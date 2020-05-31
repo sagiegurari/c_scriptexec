@@ -21,7 +21,7 @@ macro(add_external_lib)
     COMMAND git clone git@github.com:sagiegurari/c_string_buffer.git
   )
   execute_process(
-    COMMAND git checkout tags/v0.1.1
+    COMMAND git checkout tags/v0.1.2
     WORKING_DIRECTORY c_string_buffer
   )
   string(TOUPPER ${ARGV0} X_EXTERNAL_LIB_NAME)
