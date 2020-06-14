@@ -16,19 +16,19 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 include(ExternalProject)
 macro(add_external_lib)
-  message("Adding External Lib: ${ARGV0}")
+  message("Adding External Lib: ${ARGV0} version: ${ARGV1}")
   execute_process(
     COMMAND git clone git@github.com:sagiegurari/c_string_buffer.git
   )
   execute_process(
-    COMMAND git checkout tags/v0.1.2
+    COMMAND git checkout tags/${ARGV1}
     WORKING_DIRECTORY c_string_buffer
   )
   string(TOUPPER ${ARGV0} X_EXTERNAL_LIB_NAME)
   file(GLOB "${X_EXTERNAL_LIB_NAME}_SOURCES" "target/c_${ARGV0}/src/*.c")
   set("${X_EXTERNAL_LIB_NAME}_INCLUDE" "target/c_${ARGV0}/include")
 endmacro(add_external_lib)
-add_external_lib("string_buffer")
+add_external_lib("string_buffer" "v0.1.2")
 
 include_directories(include "${STRING_BUFFER_INCLUDE}")
 

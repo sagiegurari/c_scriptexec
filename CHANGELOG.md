@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.1.3 (2020-06-14)
+
+* Update build to accept dependency tag value.
+
 ### v0.1.2 (2020-05-31)
 
 * Stability Improvements
