@@ -14,7 +14,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-include(ExternalProject)
 macro(add_external_lib)
   message("Adding External Lib: ${ARGV0} version: ${ARGV1}")
   execute_process(
@@ -81,3 +80,4 @@ setup_test("valid_multiple_commands_with_print")
 setup_test("exit_on_error_valid")
 setup_test("exit_on_error_break")
 setup_test("exit_on_error_ignore")
+setup_test("stability")
