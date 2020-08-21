@@ -5,7 +5,7 @@
 
 void test_impl()
 {
-  const char *script = "echo start\nls\nls -la\npwd\necho end";
+  const char *script = "echo start\nls\necho end";
 
   for (int index = 0; index < 1000; index++)
   {
