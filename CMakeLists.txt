@@ -3,6 +3,10 @@ cmake_minimum_required (VERSION 3.7)
 
 project (scriptexec C)
 
+# include shared utilities
+execute_process(COMMAND git clone git@github.com:sagiegurari/cmake-modules.git)
+include("target/cmake-modules/src/utils.cmake")
+
 set(CMAKE_BUILD_TYPE Release)
 if(NOT WIN32)
   set(X_CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror -Wall -Wextra -Wcast-align -Wunused -Wshadow -Wpedantic")
@@ -15,17 +19,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 macro(add_external_lib)
-  message("Adding External Lib: ${ARGV0} version: ${ARGV1}")
-  execute_process(
-    COMMAND git clone git@github.com:sagiegurari/c_string_buffer.git
-  )
-  execute_process(
-    COMMAND git checkout tags/${ARGV1}
-    WORKING_DIRECTORY c_string_buffer
-  )
-  string(TOUPPER ${ARGV0} X_EXTERNAL_LIB_NAME)
-  file(GLOB "${X_EXTERNAL_LIB_NAME}_SOURCES" "target/c_${ARGV0}/src/*.c")
-  set("${X_EXTERNAL_LIB_NAME}_INCLUDE" "target/c_${ARGV0}/include")
+  utils_add_external_github_lib(sagiegurari c_${ARGV0} ${ARGV1} ${ARGV0} target)
 endmacro(add_external_lib)
 add_external_lib("string_buffer" "v0.1.2")
 
@@ -61,13 +55,7 @@ set_target_properties(example PROPERTIES COMPILE_FLAGS "${X_CMAKE_C_FLAGS}")
 enable_testing()
 
 macro(setup_test)
-  message("Adding Test: ${ARGV0}")
-  add_executable(test_${ARGV0} tests/test_${ARGV0}.c ${COMMON_TEST_SOURCES})
-  target_link_libraries(test_${ARGV0} scriptexec)
-  set_target_properties(test_${ARGV0} PROPERTIES COMPILE_FLAGS "${X_CMAKE_C_FLAGS}")
-  add_test(NAME ${ARGV0}
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-    COMMAND test_${ARGV0})
+  utils_setup_c_test(${ARGV0} "${COMMON_TEST_SOURCES}" "${X_CMAKE_C_FLAGS}" "${CMAKE_BINARY_DIR}/bin")
 endmacro(setup_test)
 
 setup_test("valid_command")
