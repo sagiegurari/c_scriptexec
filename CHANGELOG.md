@@ -3,6 +3,7 @@
 ### Unreleased
 
 * Update cmake build to use shared cmake utilities.
+* Additional tests.
 
 ### v0.1.3 (2020-06-14)
 
