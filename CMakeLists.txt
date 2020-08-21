@@ -4,7 +4,7 @@ cmake_minimum_required (VERSION 3.7)
 project (scriptexec C)
 
 # include shared utilities
-execute_process(COMMAND git clone git@github.com:sagiegurari/cmake-modules.git)
+execute_process(COMMAND git clone https://github.com/sagiegurari/cmake-modules.git)
 include("target/cmake-modules/src/utils.cmake")
 
 set(CMAKE_BUILD_TYPE Release)
