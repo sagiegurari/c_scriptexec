@@ -62,23 +62,21 @@ set_target_properties(example PROPERTIES COMPILE_FLAGS "${X_CMAKE_C_FLAGS}")
 # tests
 enable_testing()
 
-macro(setup_test)
-  utils_setup_c_test(
-    NAME ${ARGV0}
-    ADDITIONAL_SOURCES "${COMMON_TEST_SOURCES}"
-    COMPILATION_FLAGS "${X_CMAKE_C_FLAGS}"
-    BINARY_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-  )
-endmacro(setup_test)
+utils_setup_c_test(
+  NAME
+    valid_command
+    invalid_command
+    valid_multiple_commands
+    valid_multiple_commands_default_options
+    valid_multiple_commands_with_valid_runner
+    valid_multiple_commands_with_invalid_runner
+    valid_multiple_commands_with_print
+    exit_on_error_valid
+    exit_on_error_break
+    exit_on_error_ignore
+    stability
+  ADDITIONAL_SOURCES "${COMMON_TEST_SOURCES}"
+  COMPILATION_FLAGS "${X_CMAKE_C_FLAGS}"
+  BINARY_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
 
-setup_test("valid_command")
-setup_test("invalid_command")
-setup_test("valid_multiple_commands")
-setup_test("valid_multiple_commands_default_options")
-setup_test("valid_multiple_commands_with_valid_runner")
-setup_test("valid_multiple_commands_with_invalid_runner")
-setup_test("valid_multiple_commands_with_print")
-setup_test("exit_on_error_valid")
-setup_test("exit_on_error_break")
-setup_test("exit_on_error_ignore")
-setup_test("stability")
