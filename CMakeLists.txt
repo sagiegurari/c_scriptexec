@@ -4,7 +4,9 @@ cmake_minimum_required (VERSION 3.7)
 project (scriptexec C)
 
 # include shared utilities
-execute_process(COMMAND git clone https://github.com/sagiegurari/cmake-modules.git)
+if(NOT EXISTS "target/cmake-modules/src/utils.cmake")
+  execute_process(COMMAND git clone https://github.com/sagiegurari/cmake-modules.git)
+endif()
 include("target/cmake-modules/src/utils.cmake")
 
 set(CMAKE_BUILD_TYPE Release)
@@ -19,7 +21,13 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 macro(add_external_lib)
-  utils_add_external_github_lib(sagiegurari c_${ARGV0} ${ARGV1} ${ARGV0} target)
+  utils_add_external_github_lib(
+    REPO_USERNAME sagiegurari
+    REPO_NAME c_${ARGV0}
+    TAG_NAME ${ARGV1}
+    LIBRARY_NAME ${ARGV0}
+    LIBRARY_PARENT_DIRECTORY target
+  )
 endmacro(add_external_lib)
 add_external_lib("string_buffer" "v0.1.2")
 
@@ -55,7 +63,12 @@ set_target_properties(example PROPERTIES COMPILE_FLAGS "${X_CMAKE_C_FLAGS}")
 enable_testing()
 
 macro(setup_test)
-  utils_setup_c_test(${ARGV0} "${COMMON_TEST_SOURCES}" "${X_CMAKE_C_FLAGS}" "${CMAKE_BINARY_DIR}/bin")
+  utils_setup_c_test(
+    NAME ${ARGV0}
+    ADDITIONAL_SOURCES "${COMMON_TEST_SOURCES}"
+    COMPILATION_FLAGS "${X_CMAKE_C_FLAGS}"
+    BINARY_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+  )
 endmacro(setup_test)
 
 setup_test("valid_command")
