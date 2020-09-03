@@ -4,7 +4,7 @@ if [ $1 = "--clean" ]; then
   rm -Rf ./target
 fi
 
-export X_CMAKE_SCRIPTEXEC_UNCRUSTIFY_ENABLED=1
+export X_CMAKE_UNCRUSTIFY_ENABLED=1
 
 echo Creating Target Directory...
 mkdir ./target

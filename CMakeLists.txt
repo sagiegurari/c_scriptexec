@@ -40,7 +40,7 @@ file(GLOB TEST_SOURCES "tests/*")
 file(GLOB COMMON_TEST_SOURCES "tests/test.*")
 
 # format code
-if(DEFINED ENV{X_CMAKE_SCRIPTEXEC_UNCRUSTIFY_ENABLED})
+if(DEFINED ENV{X_CMAKE_UNCRUSTIFY_ENABLED})
   add_custom_target(uncrustify ALL
     uncrustify
     -c ${X_CMAKE_PROJECT_ROOT_DIR}/uncrustify.cfg
