@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### v0.1.4
+### v0.1.4 (2020-09-25)
 
 * Use fsio for file operations.
 * Upgrade string_buffer dependency.
