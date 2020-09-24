@@ -1,3 +1,4 @@
+#include "fsio.h"
 #include "scriptexec.h"
 #include "string_buffer.h"
 #include <stddef.h>
@@ -7,9 +8,8 @@
 #include <unistd.h>
 
 // private functions
-struct ScriptExecResult create_result();
-bool write_text_file(char *, const char *);
-char *read_and_delete_text_file(char *, struct StringBuffer *);
+struct ScriptExecResult _create_result();
+char *_read_and_delete_text_file(char *);
 
 struct ScriptExecOptions scriptexec_create_options()
 {
@@ -32,7 +32,7 @@ struct ScriptExecResult scriptexec_run(const char *script)
 
 struct ScriptExecResult scriptexec_run_with_options(const char *script, struct ScriptExecOptions options)
 {
-  struct ScriptExecResult result = create_result();
+  struct ScriptExecResult result = _create_result();
 
   if (script == NULL)
   {
@@ -68,10 +68,10 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   }
 
   string_buffer_append_string(buffer, (char *)script);
-  const char *updated_script = string_buffer_to_string(buffer);
+  char *updated_script = string_buffer_to_string(buffer);
 
-  char       template[] = "/tmp/scriptexec_XXXXXX";
-  char       *dir_name  = mkdtemp(template);
+  char template[] = "/tmp/scriptexec_XXXXXX";
+  char *dir_name  = mkdtemp(template);
 
   if (dir_name == NULL)
   {
@@ -95,7 +95,7 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   char *err_file = string_buffer_to_string(buffer);
 
   // write script file
-  if (!write_text_file(script_file, updated_script))
+  if (!fsio_write_text_file(script_file, updated_script))
   {
     rmdir(dir_name);
     string_buffer_release(buffer);
@@ -119,23 +119,22 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   string_buffer_append_string(buffer, " 1> ");
   string_buffer_append_string(buffer, out_file);
   const char *command = string_buffer_to_string(buffer);
+  string_buffer_release(buffer);
 
   result.code = system(command);
 
   // read out/err
-  result.out = read_and_delete_text_file(out_file, buffer);
-  result.err = read_and_delete_text_file(err_file, buffer);
+  result.out = _read_and_delete_text_file(out_file);
+  result.err = _read_and_delete_text_file(err_file);
 
   // delete files
   remove(script_file);
   rmdir(dir_name);
 
-  string_buffer_release(buffer);
-
   return(result);
 } /* scriptexec_run_with_options */
 
-struct ScriptExecResult create_result()
+struct ScriptExecResult _create_result()
 {
   struct ScriptExecResult result = { .code = 0, .out = NULL, .err = NULL };
 
@@ -143,47 +142,11 @@ struct ScriptExecResult create_result()
 }
 
 
-bool write_text_file(char *file, const char *text)
+char *_read_and_delete_text_file(char *file)
 {
-  FILE *fp = fopen(file, "w");
+  char *text = fsio_read_text_file(file);
 
-  if (fp == NULL)
-  {
-    return(false);
-  }
-
-  if (fputs(text, fp) == EOF)
-  {
-    fclose(fp);
-    remove(file);
-
-    return(false);
-  }
-
-  fclose(fp);
-
-  return(true);
-}
-
-
-char *read_and_delete_text_file(char *file, struct StringBuffer *buffer)
-{
-  FILE *fp = fopen(file, "r");
-
-  if (fp == NULL)
-  {
-    return(NULL);
-  }
-
-  int character;
-  string_buffer_clear(buffer);
-  while ((character = getc(fp)) != EOF)
-  {
-    string_buffer_append(buffer, (char)character);
-  }
-
-  fclose(fp);
   remove(file);
 
-  return(string_buffer_to_string(buffer));
+  return(text);
 }

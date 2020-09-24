@@ -29,26 +29,28 @@ macro(add_external_lib)
     LIBRARY_PARENT_DIRECTORY target
   )
 endmacro(add_external_lib)
-add_external_lib("string_buffer" "v0.1.2")
+add_external_lib("string_buffer" "v0.1.3")
+add_external_lib("fsio" "v0.1.0")
 
-include_directories(include "${STRING_BUFFER_INCLUDE}")
+include_directories(include "${STRING_BUFFER_INCLUDE}" "${FSIO_INCLUDE}")
 
 # define all sources
 file(GLOB SOURCES "src/*.c")
 file(GLOB HEADER_SOURCES "include/*.h")
 file(GLOB TEST_SOURCES "tests/*")
 file(GLOB COMMON_TEST_SOURCES "tests/test.*")
+file(GLOB EXAMPLE_SOURCES "example/*.c")
 
 # format code
 if(DEFINED ENV{X_CMAKE_UNCRUSTIFY_ENABLED})
   add_custom_target(uncrustify ALL
     uncrustify
     -c ${X_CMAKE_PROJECT_ROOT_DIR}/uncrustify.cfg
-    --no-backup ${SOURCES} ${HEADER_SOURCES} ${TEST_SOURCES})
+    --no-backup ${SOURCES} ${HEADER_SOURCES} ${TEST_SOURCES} ${EXAMPLE_SOURCES})
 endif()
 
 # create static library
-add_library(scriptexec STATIC ${SOURCES} ${STRING_BUFFER_SOURCES})
+add_library(scriptexec STATIC ${SOURCES} ${STRING_BUFFER_SOURCES} ${FSIO_SOURCES})
 
 if(NOT WIN32)
   set_target_properties(scriptexec PROPERTIES COMPILE_FLAGS "${X_CMAKE_C_FLAGS} -Wconversion")

@@ -1,7 +1,9 @@
 ## CHANGELOG
 
-### Unreleased
+### v0.1.4
 
+* Use fsio for file operations.
+* Upgrade string_buffer dependency.
 * Update cmake build to use shared cmake utilities.
 * Additional tests.
 
