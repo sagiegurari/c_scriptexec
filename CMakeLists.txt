@@ -64,19 +64,7 @@ set_target_properties(example PROPERTIES COMPILE_FLAGS "${X_CMAKE_C_FLAGS}")
 # tests
 enable_testing()
 
-utils_setup_c_test(
-  NAME
-    valid_command
-    invalid_command
-    valid_multiple_commands
-    valid_multiple_commands_default_options
-    valid_multiple_commands_with_valid_runner
-    valid_multiple_commands_with_invalid_runner
-    valid_multiple_commands_with_print
-    exit_on_error_valid
-    exit_on_error_break
-    exit_on_error_ignore
-    stability
+utils_setup_c_all_tests(
   ADDITIONAL_SOURCES "${COMMON_TEST_SOURCES}"
   COMPILATION_FLAGS "${X_CMAKE_C_FLAGS}"
   BINARY_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
