@@ -13,6 +13,9 @@ void test_impl()
   assert_num_equal(result.code, 0);
   assert_string_equal(result.out, "1\n2\n3\n4\n");
   assert_string_equal(result.err, "+ echo 1\n+ echo 2\n+ echo 3\n+ echo 4\n");
+
+  free(result.out);
+  free(result.err);
 }
 
 

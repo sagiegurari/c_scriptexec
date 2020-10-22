@@ -14,6 +14,9 @@ void test_impl()
   assert_true(result.code != 0);
   assert_string_equal(result.out, "");
   assert_true(strlen(result.err) > 0);
+
+  free(result.out);
+  free(result.err);
 }
 
 

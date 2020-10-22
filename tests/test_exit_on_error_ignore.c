@@ -14,6 +14,9 @@ void test_impl()
   assert_num_equal(result.code, 0);
   assert_string_equal(result.out, "1\n2\n3\n");
   assert_true(strlen(result.err) > 0);
+
+  free(result.out);
+  free(result.err);
 }
 
 

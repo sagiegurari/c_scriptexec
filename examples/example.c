@@ -1,5 +1,6 @@
 #include "scriptexec.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
@@ -16,4 +17,7 @@ int main()
 
   result = scriptexec_run_with_options("echo 1\necho 2\necho 3\necho 4", options);
   printf("Code: %d\nOutput:\n%s\nError:\n%s\n", result.code, result.out, result.err);
+
+  free(result.out);
+  free(result.err);
 }

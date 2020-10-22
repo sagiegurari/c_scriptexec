@@ -9,6 +9,9 @@ void test_impl()
   assert_num_equal(result.code, 0);
   assert_string_equal(result.out, "test\n");
   assert_string_equal(result.err, "");
+
+  free(result.out);
+  free(result.err);
 }
 
 

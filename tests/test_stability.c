@@ -15,6 +15,9 @@ void test_impl()
     assert_true(strstr(result.out, "start") != NULL);
     assert_true(strstr(result.out, "end") != NULL);
     assert_string_equal(result.err, "");
+
+    free(result.out);
+    free(result.err);
   }
 }
 
