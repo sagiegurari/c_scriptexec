@@ -39,7 +39,7 @@ file(GLOB SOURCES "src/*.c")
 file(GLOB HEADER_SOURCES "include/*.h")
 file(GLOB TEST_SOURCES "tests/*")
 file(GLOB COMMON_TEST_SOURCES "tests/test.*")
-file(GLOB EXAMPLE_SOURCES "example/*.c")
+file(GLOB EXAMPLE_SOURCES "examples/*.c")
 
 # format code
 if(DEFINED ENV{X_CMAKE_UNCRUSTIFY_ENABLED})
