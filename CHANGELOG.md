@@ -1,7 +1,10 @@
 ## CHANGELOG
 
-### Unpublished
+### v0.1.5 (2020-11-07)
 
+* Internal functions are now namespaced with _scriptexec prefix.
+* Upgrade c_string_buffer to 0.1.4
+* Upgrade c_forever to 0.1.1
 * Free memory in tests and example.
 * Improved build setup (no need to list test names).
 

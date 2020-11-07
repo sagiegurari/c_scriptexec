@@ -8,8 +8,8 @@
 #include <unistd.h>
 
 // private functions
-struct ScriptExecResult _create_result();
-char *_read_and_delete_text_file(char *);
+struct ScriptExecResult _scriptexec_create_result();
+char *_scriptexec_read_and_delete_text_file(char *);
 
 struct ScriptExecOptions scriptexec_create_options()
 {
@@ -32,7 +32,7 @@ struct ScriptExecResult scriptexec_run(const char *script)
 
 struct ScriptExecResult scriptexec_run_with_options(const char *script, struct ScriptExecOptions options)
 {
-  struct ScriptExecResult result = _create_result();
+  struct ScriptExecResult result = _scriptexec_create_result();
 
   if (script == NULL)
   {
@@ -124,8 +124,8 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   result.code = system(command);
 
   // read out/err
-  result.out = _read_and_delete_text_file(out_file);
-  result.err = _read_and_delete_text_file(err_file);
+  result.out = _scriptexec_read_and_delete_text_file(out_file);
+  result.err = _scriptexec_read_and_delete_text_file(err_file);
 
   // delete files
   remove(script_file);
@@ -134,7 +134,7 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   return(result);
 } /* scriptexec_run_with_options */
 
-struct ScriptExecResult _create_result()
+struct ScriptExecResult _scriptexec_create_result()
 {
   struct ScriptExecResult result = { .code = 0, .out = NULL, .err = NULL };
 
@@ -142,7 +142,7 @@ struct ScriptExecResult _create_result()
 }
 
 
-char *_read_and_delete_text_file(char *file)
+char *_scriptexec_read_and_delete_text_file(char *file)
 {
   char *text = fsio_read_text_file(file);
 
