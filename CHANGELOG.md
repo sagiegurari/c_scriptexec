@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.1.6 (2020-11-12)
+
+* Upgrade c_fsio to 0.1.2
+
 ### v0.1.5 (2020-11-07)
 
 * Internal functions are now namespaced with _scriptexec prefix.

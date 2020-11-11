@@ -30,7 +30,7 @@ macro(add_external_lib)
   )
 endmacro(add_external_lib)
 add_external_lib("string_buffer" "v0.1.4")
-add_external_lib("fsio" "v0.1.1")
+add_external_lib("fsio" "v0.1.2")
 
 include_directories(include "${STRING_BUFFER_INCLUDE}" "${FSIO_INCLUDE}")
 
