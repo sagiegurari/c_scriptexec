@@ -76,6 +76,7 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   if (dir_name == NULL)
   {
     string_buffer_release(buffer);
+    free(updated_script);
 
     result.code = -1;
     return(result);
@@ -95,10 +96,17 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   char *err_file = string_buffer_to_string(buffer);
 
   // write script file
-  if (!fsio_write_text_file(script_file, updated_script))
+  bool written = fsio_write_text_file(script_file, updated_script);
+  free(updated_script);
+  if (!written)
   {
     rmdir(dir_name);
+
     string_buffer_release(buffer);
+    free(dir_name);
+    free(script_file);
+    free(out_file);
+    free(err_file);
 
     result.code = -1;
     return(result);
@@ -118,10 +126,11 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   string_buffer_append_string(buffer, err_file);
   string_buffer_append_string(buffer, " 1> ");
   string_buffer_append_string(buffer, out_file);
-  const char *command = string_buffer_to_string(buffer);
+  char *command = string_buffer_to_string(buffer);
   string_buffer_release(buffer);
 
   result.code = system(command);
+  free(command);
 
   // read out/err
   result.out = _scriptexec_read_and_delete_text_file(out_file);
@@ -130,6 +139,11 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   // delete files
   remove(script_file);
   rmdir(dir_name);
+
+  free(dir_name);
+  free(script_file);
+  free(out_file);
+  free(err_file);
 
   return(result);
 } /* scriptexec_run_with_options */
