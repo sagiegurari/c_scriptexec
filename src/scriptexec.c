@@ -87,14 +87,6 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   string_buffer_append_string(buffer, "/script");
   char *script_file = string_buffer_to_string(buffer);
 
-  string_buffer_append_string(buffer, ".out");
-  char *out_file = string_buffer_to_string(buffer);
-
-  string_buffer_clear(buffer);
-  string_buffer_append_string(buffer, script_file);
-  string_buffer_append_string(buffer, ".err");
-  char *err_file = string_buffer_to_string(buffer);
-
   // write script file
   bool written = fsio_write_text_file(script_file, updated_script);
   free(updated_script);
@@ -103,14 +95,19 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
     rmdir(dir_name);
 
     string_buffer_release(buffer);
-    free(dir_name);
     free(script_file);
-    free(out_file);
-    free(err_file);
 
     result.code = -1;
     return(result);
   }
+
+  string_buffer_append_string(buffer, ".out");
+  char *out_file = string_buffer_to_string(buffer);
+
+  string_buffer_clear(buffer);
+  string_buffer_append_string(buffer, script_file);
+  string_buffer_append_string(buffer, ".err");
+  char *err_file = string_buffer_to_string(buffer);
 
   // create command
   char *runner = options.runner;
@@ -132,17 +129,15 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   result.code = system(command);
   free(command);
 
-  // read out/err
-  result.out = _scriptexec_read_and_delete_text_file(out_file);
-  result.err = _scriptexec_read_and_delete_text_file(err_file);
-
   // delete files
   remove(script_file);
   rmdir(dir_name);
-
-  free(dir_name);
   free(script_file);
+
+  // read out/err
+  result.out = _scriptexec_read_and_delete_text_file(out_file);
   free(out_file);
+  result.err = _scriptexec_read_and_delete_text_file(err_file);
   free(err_file);
 
   return(result);
