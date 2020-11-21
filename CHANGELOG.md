@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.1.8
+
+* Test memory leaks in CI
+
 ### v0.1.7 (2020-11-18)
 
 * Fixed memory leaks
