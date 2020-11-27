@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.1.9 (2020-11-27)
+
+* Upgrade c_fsio to 0.1.3
+
 ### v0.1.8
 
 * Test memory leaks in CI
