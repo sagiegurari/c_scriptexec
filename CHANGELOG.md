@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.1.10 (2020-12-16)
+
+* Upgrade c_fsio to 0.1.5
+
 ### v0.1.9 (2020-12-09)
 
 * Upgrade c_fsio to 0.1.4
