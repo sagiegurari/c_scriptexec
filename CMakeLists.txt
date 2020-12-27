@@ -31,8 +31,8 @@ macro(add_external_lib)
     LIBRARY_PARENT_DIRECTORY target
   )
 endmacro(add_external_lib)
-add_external_lib("string_buffer" "v0.1.4")
-add_external_lib("fsio" "v0.1.5")
+add_external_lib("string_buffer")
+add_external_lib("fsio")
 
 include_directories(include "${STRING_BUFFER_INCLUDE}" "${FSIO_INCLUDE}")
 
