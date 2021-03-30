@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.1.11
+
+* Added cargo-make makefile for simpler sharing of optional development build instructions.
+
 ### v0.1.10 (2020-12-16)
 
 * Upgrade c_fsio to 0.1.5
