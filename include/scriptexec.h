@@ -18,7 +18,7 @@ struct ScriptExecResult
   char *err;
 };
 
-struct ScriptExecOptions scriptexec_create_options();
+struct ScriptExecOptions scriptexec_create_options(void);
 
 struct ScriptExecResult  scriptexec_run(const char * /* script */);
 struct ScriptExecResult  scriptexec_run_with_options(const char * /* script */, struct ScriptExecOptions);
