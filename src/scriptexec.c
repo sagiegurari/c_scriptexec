@@ -8,8 +8,8 @@
 #include <unistd.h>
 
 // private functions
-struct ScriptExecResult _scriptexec_create_result();
-char *_scriptexec_read_and_delete_text_file(char *);
+static struct ScriptExecResult _scriptexec_create_result();
+static char *_scriptexec_read_and_delete_text_file(char *);
 
 struct ScriptExecOptions scriptexec_create_options()
 {
@@ -143,7 +143,7 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   return(result);
 } /* scriptexec_run_with_options */
 
-struct ScriptExecResult _scriptexec_create_result()
+static struct ScriptExecResult _scriptexec_create_result()
 {
   struct ScriptExecResult result = { .code = 0, .out = NULL, .err = NULL };
 
@@ -151,7 +151,7 @@ struct ScriptExecResult _scriptexec_create_result()
 }
 
 
-char *_scriptexec_read_and_delete_text_file(char *file)
+static char *_scriptexec_read_and_delete_text_file(char *file)
 {
   char *text = fsio_read_text_file(file);
 
