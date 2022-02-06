@@ -2,6 +2,7 @@
 
 ### v0.1.11
 
+* Maintenance: Update string_buffer dependency
 * Added void to no arg functions
 * Added static to internal functions
 * Adding lint checks as part of build
