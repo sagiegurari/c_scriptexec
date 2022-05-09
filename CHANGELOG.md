@@ -1,7 +1,8 @@
 ## CHANGELOG
 
-### v0.1.11
+### v0.1.11 (2022-05-9)
 
+* Fix: delete temp directory once done invocation
 * Maintenance: Update string_buffer dependency
 * Added void to no arg functions
 * Added static to internal functions

@@ -131,7 +131,6 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
 
   // delete files
   remove(script_file);
-  rmdir(dir_name);
   free(script_file);
 
   // read out/err
@@ -139,6 +138,9 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   free(out_file);
   result.err = _scriptexec_read_and_delete_text_file(err_file);
   free(err_file);
+
+  // delete temp directory
+  rmdir(dir_name);
 
   return(result);
 } /* scriptexec_run_with_options */
