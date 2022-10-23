@@ -1,5 +1,5 @@
-#ifndef __SCRIPTEXEC_H__
-#define __SCRIPTEXEC_H__
+#ifndef SCRIPTEXEC_H
+#define SCRIPTEXEC_H
 
 #include <stdbool.h>
 

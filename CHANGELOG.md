@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### v0.1.12
+
+* Updated header include guard macro name
+
 ### v0.1.11 (2022-05-9)
 
 * Fix: delete temp directory once done invocation
