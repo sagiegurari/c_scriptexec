@@ -1,7 +1,8 @@
 ## CHANGELOG
 
-### v0.1.12
+### v0.1.12 (2023-08-14)
 
+* Add option to provide script temporary directory path instead of system temporary
 * Updated header include guard macro name
 
 ### v0.1.11 (2022-05-9)

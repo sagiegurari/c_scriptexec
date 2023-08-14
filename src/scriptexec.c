@@ -15,7 +15,11 @@ struct ScriptExecOptions scriptexec_create_options(void)
 {
   struct ScriptExecOptions options =
   {
-    .runner = NULL, .working_directory = NULL, .exit_on_error = true, .print_commands = false
+    .runner              = NULL,
+    .working_directory   = NULL,
+    .exit_on_error       = true,
+    .print_commands      = false,
+    .temporary_directory = NULL
   };
 
   return(options);
@@ -70,8 +74,18 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   stringbuffer_append_string(buffer, (char *)script);
   char *updated_script = stringbuffer_to_string(buffer);
 
-  char template[] = "/tmp/scriptexec_XXXXXX";
-  char *dir_name  = mkdtemp(template);
+  bool delete_temporary_directory = false;
+  char *dir_name                  = NULL;
+  if (options.temporary_directory == NULL)
+  {
+    char template[] = "/tmp/scriptexec_XXXXXX";
+    dir_name                   = mkdtemp(template);
+    delete_temporary_directory = true;
+  }
+  else
+  {
+    dir_name = options.temporary_directory;
+  }
 
   if (dir_name == NULL)
   {
@@ -83,16 +97,18 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   }
 
   stringbuffer_clear(buffer);
-  stringbuffer_append_string(buffer, dir_name);
-  stringbuffer_append_string(buffer, "/script");
-  char *script_file = stringbuffer_to_string(buffer);
+  char *script_file = fsio_join_paths(dir_name, "script");
+  stringbuffer_append_string(buffer, script_file);
 
   // write script file
   bool written = fsio_write_text_file(script_file, updated_script);
   free(updated_script);
   if (!written)
   {
-    rmdir(dir_name);
+    if (delete_temporary_directory)
+    {
+      rmdir(dir_name);
+    }
 
     stringbuffer_release(buffer);
     free(script_file);
@@ -140,7 +156,10 @@ struct ScriptExecResult scriptexec_run_with_options(const char *script, struct S
   free(err_file);
 
   // delete temp directory
-  rmdir(dir_name);
+  if (delete_temporary_directory)
+  {
+    rmdir(dir_name);
+  }
 
   return(result);
 } /* scriptexec_run_with_options */

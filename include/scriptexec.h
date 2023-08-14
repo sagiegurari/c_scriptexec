@@ -9,6 +9,9 @@ struct ScriptExecOptions
   char *working_directory;
   bool exit_on_error;
   bool print_commands;
+  // The directory used to write the temporary script in
+  // If NULL, it will use the system temporary directory as parent
+  char *temporary_directory;
 };
 
 struct ScriptExecResult
