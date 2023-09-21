@@ -19,6 +19,7 @@ This library enables to invoke complex multi command scripts with a single C api
 <a name="usage"></a>
 ## Usage
 
+<!-- example source start -->
 ```c
 #include "scriptexec.h"
 #include <stdio.h>
@@ -46,6 +47,7 @@ int main()
   free(result.err);
 }
 ```
+<!-- example source end -->
 
 ## Contributing
 See [contributing guide](.github/CONTRIBUTING.md)
